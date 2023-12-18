@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-    has_many :medications
-    has_many :health_metrics
-    has_many :medication_interactions
+    has_secure_password
+
+    validates :email, uniqueness: true
 end

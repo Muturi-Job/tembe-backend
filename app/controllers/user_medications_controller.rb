@@ -2,14 +2,14 @@ class UserMedicationsController < ApplicationController
   before_action :authorize, except: [:index]
 
   def index
-    render json: UserMedication.all
+    render json: UserMedication.all, include: :medication,status: :accepted
   end
 
   def create
     user_medication = current_user.user_medications.build(user_medications_params)
 
     if user_medication.save
-      render json: user_medication, status: :created
+      render json: user_medication, include: :medication, status: :created
     else
       render json: { error: "Unable to create user medication" }, status: :unprocessable_entity
     end
@@ -20,7 +20,7 @@ class UserMedicationsController < ApplicationController
 
     if user_medication
       if user_medication.update(user_medications_params)
-        render json: user_medication, status: :accepted
+        render json: user_medication, include: :medication, status: :accepted
       else
         render json: { error: "Unable to update user medication" }, status: :unprocessable_entity
       end

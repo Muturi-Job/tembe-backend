@@ -1,26 +1,58 @@
-medications_data = [
-  {
-    name: 'Medicine A',
-    form: 'Tablet',
-    frequency: 'Twice a day',
-    dosage_quantity: 1,
-    dosage_units: 'pill(s)',
-    instructions: 'Take with water',
-    description: 'Description of Medicine A'
-  },
-  {
-    name: 'Medicine B',
-    form: 'Capsule',
-    frequency: 'Once a day',
-    dosage_quantity: 2,
-    dosage_units: 'capsule(s)',
-    instructions: 'Take after meals',
-    description: 'Description of Medicine B'
-  },
-]
+# Create Users
+User.create!(
+  email: 'user1@example.com',
+  password: 'password1',
+  first_name: 'John',
+  last_name: 'Doe',
+  # Other user attributes
+)
 
-medications_data.each do |med_data|
-    Medication.create!(med_data)
-  end
-  
-  puts 'Sample medications seeded successfully.'
+User.create!(
+  email: 'user2@example.com',
+  password: 'password2',
+  first_name: 'Jane',
+  last_name: 'Smith',
+  # Other user attributes
+)
+
+# Create Medications
+Medication.create!(
+  name: 'Medication A',
+  form: 'capsule',
+  frequency: 'once',
+  dosage_quantity: 1,
+  dosage_units: 'mg',
+  instructions: 'Take after meal',
+  description: 'Description of Medication A',
+  # Other medication attributes
+)
+
+Medication.create!(
+  name: 'Medication B',
+  form: 'tablet',
+  frequency: 'twice',
+  dosage_quantity: 2,
+  dosage_units: 'pills',
+  instructions: 'Take in the morning and evening',
+  description: 'Description of Medication B',
+  # Other medication attributes
+)
+
+# Create UserMedications
+UserMedication.create!(
+  user_id: User.first.id,
+  medication_id: Medication.first.id,
+  start_date: Date.today - 10.days,
+  duration: 30,
+  notes: 'Started medication last week',
+  # Other user_medication attributes
+)
+
+UserMedication.create!(
+  user_id: User.last.id,
+  medication_id: Medication.last.id,
+  start_date: Date.today - 5.days,
+  duration: 20,
+  notes: 'Started medication a few days ago',
+  # Other user_medication attributes
+)

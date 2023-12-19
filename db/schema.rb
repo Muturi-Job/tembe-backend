@@ -48,7 +48,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_19_073126) do
     t.integer "user_id"
     t.integer "medication_id"
     t.date "start_date"
-    t.date "completion_date"
+    t.integer "duration"
     t.text "notes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

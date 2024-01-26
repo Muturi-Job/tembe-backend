@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_19_073126) do
     t.string "password_digest"
     t.string "first_name"
     t.string "last_name"
+    t.string "profile_image_url"
     t.string "plan"
     t.string "gender"
     t.date "date_of_birth"

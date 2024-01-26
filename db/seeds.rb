@@ -4,6 +4,7 @@ User.create!(
   password: 'password1',
   first_name: 'John',
   last_name: 'Doe',
+  profile_image_url: 'https://media.istockphoto.com/id/1300512215/photo/headshot-portrait-of-smiling-ethnic-businessman-in-office.jpg?s=2048x2048&w=is&k=20&c=Xk0eY3oIoNWDKG937WDH-CR66xRG5V0C-iQuvNcqO2U=',
   # Other user attributes
 )
 

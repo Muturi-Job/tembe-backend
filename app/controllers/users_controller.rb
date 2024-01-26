@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+# include Authentication
   rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_response
   rescue_from ActiveRecord::RecordNotFound, with: :user_not_found_response
 
-  before_action :authorize, except: [:index, :show, :create]
+  # before_action :authorize, except: [:index, :show, :create, ]
  
 
   # GET /users
@@ -12,24 +13,28 @@ class UsersController < ApplicationController
 
   # GET /users/me
   def show
-    user = current_user
-    if user
-      render json: user, status: :ok
-    else
-      render json: { error: 'No active session' }, status: :unauthorized
-    end
-  end
+    user = User.find(params[:id])
+    render json: user, status: :ok
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: 'User not found' }, status: :not_found  end
 
   # POST /users
   def create
+    existing_user = User.find_by(email: user_params[:email])
+
+    if existing_user
+      render json: {error: "Email is already in use"}, status: :conflict
+    else
     user = User.create(user_params)
+
     if user.valid?
-      session[:user_id] = user.id
-      render json: user, status: :created
+      token = encode_token(user_id: user.id)
+      render json: {user: user, token: token}, status: :created
     else
       render json: {errors: user.errors.full_messages },status: :unprocessable_entity
     end
   end
+end
 
   # PATCH/PUT /users/1
   def update
@@ -63,15 +68,12 @@ else
 end
 end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def current_user
-      User.find_by(id: session[:user_id]) if session.include?(:user_id)
-    end
 
-    # Only allow a list of trusted parameters through.
+  private
+
+
     def user_params
-      params.permit(:email, :password, :first_name, :last_name, :plan, :gender, :date_of_birth, :height, :weight, :age)
+      params.permit(:email, :password, :first_name, :last_name,:profile_image_url, :plan, :gender, :date_of_birth, :height, :weight, :age)
     end
     def render_unprocessable_response(invalid)
       render json: { errors: invalid.record.errors.full_messages }, status: :unprocessable_entity
@@ -81,8 +83,6 @@ end
       render json: { error: "User not found" }, status: :not_found
     end
 
-    def authorize
-      return render json: { error: "Not authorized" }, status: :unauthorized unless session.include? :user_id
-    end
+   
     
 end
